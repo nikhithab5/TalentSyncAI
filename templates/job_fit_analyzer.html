@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 class="fw-bold">
+    AI Job Fit Analyzer
+</h1>
+
+<p class="text-muted">
+    Paste any job description from LinkedIn, Naukri, Indeed, or any company website.
+</p>
+
+{% if resume %}
+
+<div class="alert alert-success mt-3">
+    <strong>Your Resume:</strong>
+    {{ resume.resume.name }}
+</div>
+
+{% else %}
+
+<div class="alert alert-warning mt-3">
+    No resume uploaded.
+    Please upload your resume first.
+</div>
+
+{% endif %}
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <div class="mb-3 mt-4">
+
+        <label class="form-label fw-semibold">
+            Job Description
+        </label>
+
+        <textarea
+            name="job_description"
+            class="form-control"
+            rows="15"
+            placeholder="Paste the complete job description here..."
+            required
+        ></textarea>
+
+    </div>
+
+    <button
+        type="submit"
+        class="btn btn-primary btn-lg px-4">
+        Job Fit Analyzer
+    </button>
+
+</form>
+
+{% if score is not None %}
+
+<div class="card shadow-sm mt-4 p-4">
+
+    <h3 class="text-primary">
+        Match Score: {{ score }}%
+    </h3>
+
+    <h5 class="mt-4">
+        Matched Skills
+    </h5>
+
+    <ul>
+        {% for skill in found_skills %}
+            <li>✅ {{ skill }}</li>
+        {% empty %}
+            <li>No matching skills found.</li>
+        {% endfor %}
+    </ul>
+
+    <h5 class="mt-4">
+        Missing Skills
+    </h5>
+
+    <ul>
+        {% for skill in missing_skills %}
+            <li>❌ {{ skill }}</li>
+        {% empty %}
+            <li>No missing skills detected.</li>
+        {% endfor %}
+    </ul>
+
+</div>
+
+{% endif %}
+
+{% endblock %}

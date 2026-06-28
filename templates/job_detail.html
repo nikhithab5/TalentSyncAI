@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg border-0">
+
+        <div class="card-body p-5">
+
+            <!-- Job Header -->
+
+            <h1 class="fw-bold">
+                {{ job.title }}
+            </h1>
+
+            <h4 class="text-primary">
+                {{ job.company }}
+            </h4>
+
+            <div class="mt-3">
+
+                <span class="badge bg-secondary me-2">
+                    📍 {{ job.location }}
+                </span>
+
+                <span class="badge bg-success">
+                    💰 {{ job.salary }}
+                </span>
+
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Description -->
+
+            <h3 class="mb-3">
+                Job Description
+            </h3>
+
+            <div class="alert alert-light border">
+                {{ job.description }}
+            </div>
+
+            <!-- Skills -->
+
+            <h3 class="mb-3">
+                Required Skills
+            </h3>
+
+            <div class="alert alert-info">
+                {{ job.skills }}
+            </div>
+
+            <!-- Apply Button -->
+
+            {% if user.is_authenticated %}
+
+            <div class="mb-4">
+
+                <a href="{% url 'apply_job' job.id %}"
+                   class="btn btn-success">
+                    Apply Now
+                </a>
+
+                <a href="{% url 'save_job' job.id %}"
+                   class="btn btn-outline-primary">
+                    Save Job
+                </a>
+
+            </div>
+
+            {% endif %}
+
+            <hr>
+
+            <!-- Resume Analysis Section -->
+
+            <h3 class="mb-4">
+                AI Resume Analysis
+            </h3>
+
+            {% for resume in resumes %}
+
+            <div class="card shadow-sm mb-3">
+
+                <div class="card-body">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-md-8">
+
+                            <h5 class="mb-0">
+                                📄 {{ resume.name }}
+                            </h5>
+
+                        </div>
+
+                        <div class="col-md-4 text-end">
+
+                            <a href="{% url 'analyze_resume' resume.id job.id %}"
+                               class="btn btn-primary">
+                                Analyze Resume
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="alert alert-warning">
+
+                No resumes uploaded yet.
+
+                <br><br>
+
+                <a href="{% url 'upload_resume' %}"
+                   class="btn btn-warning">
+                    Upload Resume
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+            <div class="mt-4">
+
+                <a href="/"
+                   class="btn btn-secondary">
+                    ← Back to Jobs
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

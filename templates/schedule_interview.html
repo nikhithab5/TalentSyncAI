@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Schedule Interview</h2>
+
+    <div class="card shadow mt-3">
+
+        <div class="card-body">
+
+            <h4>{{ application.job.title }}</h4>
+            <p>{{ application.user.username }}</p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <label>Interview Date</label>
+                <input type="date" name="interview_date" class="form-control mb-2" required>
+
+                <label>Interview Time</label>
+                <input type="time" name="interview_time" class="form-control mb-2" required>
+
+                <label>Mode</label>
+                <select name="interview_mode" class="form-control mb-2">
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+                </select>
+
+                <label>Meeting Link</label>
+                <input type="url" name="meeting_link" class="form-control mb-3">
+
+                <button class="btn btn-success">
+                    Save Interview Schedule
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

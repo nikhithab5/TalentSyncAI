@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+```
+<h1 class="mb-4 fw-bold">
+    My Applications
+</h1>
+
+{% for application in applications %}
+
+<div class="card shadow border-0 mb-4">
+
+    <div class="card-body">
+
+        <h4 class="fw-bold">
+            {{ application.job.title }}
+        </h4>
+
+        <p class="text-muted mb-1">
+            {{ application.job.company }} • {{ application.job.location }}
+        </p>
+
+        <p class="small text-muted">
+            Applied on {{ application.applied_on }}
+        </p>
+
+        <!-- STATUS BADGE -->
+
+        <div class="mb-3">
+
+            {% if application.status == 'Applied' %}
+                <span class="badge bg-warning text-dark">
+                    Applied
+                </span>
+
+            {% elif application.status == 'Under Review' %}
+                <span class="badge bg-primary">
+                    Under Review
+                </span>
+
+            {% elif application.status == 'Shortlisted' %}
+                <span class="badge bg-info text-dark">
+                    Shortlisted
+                </span>
+
+            {% elif application.status == 'Interview Scheduled' %}
+                <span class="badge bg-secondary">
+                    Interview Scheduled
+                </span>
+
+            {% elif application.status == 'Selected' %}
+                <span class="badge bg-success">
+                    Selected
+                </span>
+
+            {% elif application.status == 'Rejected' %}
+                <span class="badge bg-danger">
+                    Rejected
+                </span>
+
+            {% endif %}
+
+        </div>
+
+        <!-- STATUS MESSAGE -->
+
+        {% if application.status == 'Applied' %}
+
+            <p class="text-muted">
+                Your application has been submitted successfully.
+            </p>
+
+        {% elif application.status == 'Under Review' %}
+
+            <p class="text-primary">
+                Recruiter is reviewing your application.
+            </p>
+
+        {% elif application.status == 'Shortlisted' %}
+
+            <p class="text-info fw-bold">
+                Congratulations! You have been shortlisted.
+            </p>
+
+        {% elif application.status == 'Interview Scheduled' %}
+
+            <p class="text-success fw-bold">
+                Interview has been scheduled.
+            </p>
+
+        {% elif application.status == 'Selected' %}
+
+            <p class="text-success fw-bold">
+                Congratulations! You have been selected.
+            </p>
+
+        {% elif application.status == 'Rejected' %}
+
+            <p class="text-danger">
+                We regret to inform you that your application was not selected.
+            </p>
+
+        {% endif %}
+
+        <!-- PROGRESS BAR -->
+
+        <div class="progress mb-4" style="height: 12px;">
+
+            {% if application.status == 'Applied' %}
+                <div class="progress-bar bg-warning" style="width:20%"></div>
+
+            {% elif application.status == 'Under Review' %}
+                <div class="progress-bar bg-primary" style="width:40%"></div>
+
+            {% elif application.status == 'Shortlisted' %}
+                <div class="progress-bar bg-info" style="width:60%"></div>
+
+            {% elif application.status == 'Interview Scheduled' %}
+                <div class="progress-bar bg-secondary" style="width:80%"></div>
+
+            {% elif application.status == 'Selected' %}
+                <div class="progress-bar bg-success" style="width:100%"></div>
+
+            {% elif application.status == 'Rejected' %}
+                <div class="progress-bar bg-danger" style="width:100%"></div>
+
+            {% endif %}
+
+        </div>
+
+        <!-- DEBUG SECTION -->
+
+        <div class="alert alert-light border">
+
+            <h6>Debug Information</h6>
+
+            <p><strong>Status:</strong> {{ application.status }}</p>
+
+            <p><strong>Interview Date:</strong> {{ application.interview_date }}</p>
+
+            <p><strong>Interview Time:</strong> {{ application.interview_time }}</p>
+
+            <p><strong>Interview Mode:</strong> {{ application.interview_mode }}</p>
+
+            <p><strong>Meeting Link:</strong> {{ application.meeting_link }}</p>
+
+        </div>
+
+        <!-- INTERVIEW DETAILS -->
+
+        {% if application.status == 'Interview Scheduled' %}
+
+        <div class="alert alert-info mt-3">
+
+            <h5>
+                📅 Interview Details
+            </h5>
+
+            <hr>
+
+            <p>
+                <strong>Date:</strong>
+                {{ application.interview_date|default:"Not Set" }}
+            </p>
+
+            <p>
+                <strong>Time:</strong>
+                {{ application.interview_time|default:"Not Set" }}
+            </p>
+
+            <p>
+                <strong>Mode:</strong>
+                {{ application.interview_mode|default:"Not Set" }}
+            </p>
+
+            {% if application.meeting_link %}
+
+                <a href="{{ application.meeting_link }}"
+                   target="_blank"
+                   class="btn btn-primary">
+
+                    Join Meeting
+
+                </a>
+
+            {% else %}
+
+                <p class="text-danger">
+                    Meeting link not available.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-info">
+
+    You have not applied to any jobs yet.
+
+</div>
+
+{% endfor %}
+```
+
+</div>
+
+{% endblock %}

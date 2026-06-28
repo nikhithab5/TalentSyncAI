@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h1 class="mb-4">
+        Best Matching Jobs
+    </h1>
+
+    <h4 class="text-muted">
+        Resume: {{ resume.name }}
+    </h4>
+
+    <hr>
+
+    {% for result in results %}
+
+    <div class="card shadow mb-3">
+
+        <div class="card-body">
+
+            <h3>{{ result.job.title }}</h3>
+
+            <p>
+                <strong>Company:</strong>
+                {{ result.job.company }}
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                {{ result.job.location }}
+            </p>
+
+            <p>
+                <strong>Match Score:</strong>
+                {{ result.score }}%
+            </p>
+
+            <div class="progress mb-3">
+
+                <div
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style="width: {{ result.score }}%;"
+                >
+                    {{ result.score }}%
+                </div>
+
+            </div>
+
+            <a href="{% url 'job_detail' result.job.id %}"
+               class="btn btn-primary">
+                View Job
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

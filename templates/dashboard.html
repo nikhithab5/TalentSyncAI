@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h1 class="text-center mb-5">
+        🚀 TalentSyncAI Dashboard
+    </h1>
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+            <div class="card shadow text-center h-100">
+                <div class="card-body">
+                    <h1>{{ total_jobs }}</h1>
+                    <h5>Total Jobs</h5>
+                    <p class="text-muted">
+                        Available opportunities
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center h-100">
+                <div class="card-body">
+                    <h1>{{ total_resumes }}</h1>
+                    <h5>Uploaded Resumes</h5>
+                    <p class="text-muted">
+                        Resume database
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center h-100">
+                <div class="card-body">
+                    <h1>{{ total_saved_jobs }}</h1>
+                    <h5>Saved Jobs</h5>
+                    <p class="text-muted">
+                        Bookmarked jobs
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow text-center h-100">
+                <div class="card-body">
+                    <h1>{{ total_applications }}</h1>
+                    <h5>Applications</h5>
+                    <p class="text-muted">
+                        Jobs applied
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-5">
+
+    <h3 class="mb-4">
+        Quick Actions
+    </h3>
+
+    <div class="row g-3">
+
+        <div class="col-md-3">
+            <a href="/upload-resume/" class="btn btn-primary w-100">
+                Upload Resume
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/resumes/" class="btn btn-success w-100">
+                View Resumes
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/saved-jobs/" class="btn btn-warning w-100">
+                Saved Jobs
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="/" class="btn btn-dark w-100">
+                Browse Jobs
+            </a>
+        </div>
+
+    </div>
+
+    <hr class="my-5">
+
+    <div class="card shadow">
+        <div class="card-body">
+
+            <h3>📈 Career Insights</h3>
+
+            <ul>
+                <li>Keep your resume updated regularly.</li>
+                <li>Analyze resumes against different jobs.</li>
+                <li>Improve missing skills to increase match scores.</li>
+                <li>Apply to jobs with 70%+ match scores.</li>
+            </ul>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

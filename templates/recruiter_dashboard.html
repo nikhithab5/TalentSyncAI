@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h1 class="fw-bold">Recruiter Dashboard</h1>
+            <p class="text-muted">
+                Manage applicants and hiring process
+            </p>
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow border-0">
+                <div class="card-body text-center">
+                    <h5>Total Applications</h5>
+                    <h2>{{ applications.count }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow border-0">
+                <div class="card-body text-center">
+                    <h5>Shortlisted</h5>
+                    <h2 class="text-info">
+                        {{ shortlisted_count }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow border-0">
+                <div class="card-body text-center">
+                    <h5>Selected</h5>
+                    <h2 class="text-success">
+                        {{ selected_count }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow border-0">
+                <div class="card-body text-center">
+                    <h5>Rejected</h5>
+                    <h2 class="text-danger">
+                        {{ rejected_count }}
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- APPLICATIONS -->
+
+    {% for application in applications %}
+
+    <div class="card shadow border-0 mb-4">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-8">
+
+                    <h4>{{ application.job.title }}</h4>
+
+                    <p class="mb-1">
+                        <strong>Candidate:</strong>
+                        {{ application.user.username }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Company:</strong>
+                        {{ application.job.company }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Applied On:</strong>
+                        {{ application.applied_on }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-4 text-end">
+
+                    {% if application.status == 'Applied' %}
+                        <span class="badge bg-warning text-dark">
+                            Applied
+                        </span>
+
+                    {% elif application.status == 'Under Review' %}
+                        <span class="badge bg-primary">
+                            Under Review
+                        </span>
+
+                    {% elif application.status == 'Shortlisted' %}
+                        <span class="badge bg-info text-dark">
+                            Shortlisted
+                        </span>
+
+                    {% elif application.status == 'Interview Scheduled' %}
+                        <span class="badge bg-secondary">
+                            Interview Scheduled
+                        </span>
+
+                    {% elif application.status == 'Selected' %}
+                        <span class="badge bg-success">
+                            Selected
+                        </span>
+
+                    {% elif application.status == 'Rejected' %}
+                        <span class="badge bg-danger">
+                            Rejected
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <!-- ACTION BUTTONS -->
+
+            {% if application.status == 'Applied' %}
+
+                <a href="{% url 'under_review_application' application.id %}"
+                   class="btn btn-primary btn-sm">
+                    Move to Under Review
+                </a>
+
+            {% elif application.status == 'Under Review' %}
+
+                <a href="{% url 'shortlist_application' application.id %}"
+                   class="btn btn-info btn-sm">
+                    Shortlist
+                </a>
+
+                <a href="{% url 'reject_application' application.id %}"
+                   class="btn btn-danger btn-sm">
+                    Reject
+                </a>
+
+            {% elif application.status == 'Shortlisted' %}
+
+                <a href="{% url 'schedule_interview' application.id %}"
+                   class="btn btn-success btn-sm">
+                    Schedule Interview
+                </a>
+
+            {% elif application.status == 'Interview Scheduled' %}
+
+                <a href="{% url 'select_application' application.id %}"
+                   class="btn btn-success btn-sm">
+                    Select Candidate
+                </a>
+
+                <a href="{% url 'reject_application' application.id %}"
+                   class="btn btn-danger btn-sm">
+                    Reject
+                </a>
+
+            {% elif application.status == 'Selected' %}
+
+                <span class="text-success fw-bold">
+                    Candidate Hired Successfully ✅
+                </span>
+
+            {% elif application.status == 'Rejected' %}
+
+                <span class="text-danger fw-bold">
+                    Application Closed ❌
+                </span>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% empty %}
+
+    <div class="alert alert-info">
+        No applications available.
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

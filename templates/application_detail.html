@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Application Details</h2>
+
+    <div class="card shadow mt-3">
+
+        <div class="card-body">
+
+            <h3>{{ application.job.title }}</h3>
+
+            <p><strong>Company:</strong> {{ application.job.company }}</p>
+            <p><strong>Location:</strong> {{ application.job.location }}</p>
+            <p><strong>Applied On:</strong> {{ application.applied_on }}</p>
+
+            <hr>
+
+            <h5>Status:</h5>
+            <p>{{ application.status }}</p>
+
+            {% if application.interview_date %}
+                <hr>
+                <h5>Interview Details</h5>
+
+                <p><strong>Date:</strong> {{ application.interview_date }}</p>
+                <p><strong>Time:</strong> {{ application.interview_time }}</p>
+                <p><strong>Mode:</strong> {{ application.interview_mode }}</p>
+
+                {% if application.meeting_link %}
+                    <a href="{{ application.meeting_link }}" target="_blank"
+                       class="btn btn-primary">
+                        Join Meeting
+                    </a>
+                {% endif %}
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <a href="{% url 'applications_list' %}" class="btn btn-secondary mt-3">
+        Back
+    </a>
+
+</div>
+
+{% endblock %}

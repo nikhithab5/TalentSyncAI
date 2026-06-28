@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+
+    <div class="col-md-10">
+
+        <div class="card shadow-lg p-5 border-0 rounded-4">
+
+            <!-- Profile Section -->
+<div class="text-center">
+
+    {% if user.profile.image %}
+        <img
+            src="{{ user.profile.image.url }}"
+            class="rounded-circle border border-3 shadow mb-3"
+            width="150"
+            height="150">
+    {% elif user.socialaccount_set.all.0 and user.socialaccount_set.all.0.extra_data.picture %}
+        <img
+            src="{{ user.socialaccount_set.all.0.extra_data.picture }}"
+            class="rounded-circle border border-3 shadow mb-3"
+            width="150"
+            height="150">
+    {% else %}
+        <img
+            src="{% static 'images/profile.png' %}"
+            class="rounded-circle border border-3 shadow mb-3"
+            width="150"
+            height="150">
+    {% endif %}
+
+    <h2 class="fw-bold">
+        {{ user.get_full_name|default:user.username }}
+    </h2>
+
+    <p class="text-muted">
+        {{ user.email }}
+    </p>
+
+    <a href="{% url 'update_profile_picture' %}"
+       class="btn btn-outline-primary mt-2">
+        📸 Change Profile Picture
+    </a>
+
+</div>
+            <!-- Statistics -->
+            <div class="row text-center">
+
+                <div class="col-md-4 mb-3">
+
+                    <div class="card shadow-sm p-4 rounded-4">
+
+                        <h1 class="text-primary">
+                            {{ applications }}
+                        </h1>
+
+                        <h5>
+                            📄 Applications
+                        </h5>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <div class="card shadow-sm p-4 rounded-4">
+
+                        <h1 class="text-success">
+                            {{ saved_jobs }}
+                        </h1>
+
+                        <h5>
+                            ❤️ Saved Jobs
+                        </h5>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4 mb-3">
+
+                    <div class="card shadow-sm p-4 rounded-4">
+
+                        <h1 class="text-warning">
+                            {{ resumes }}
+                        </h1>
+
+                        <h5>
+                            📂 Resumes
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <div class="text-center mt-5">
+
+                <a href="{% url 'dashboard' %}"
+                   class="btn btn-primary btn-lg px-4 me-2">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'resume_list' %}"
+                   class="btn btn-success btn-lg px-4">
+                    My Resumes
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

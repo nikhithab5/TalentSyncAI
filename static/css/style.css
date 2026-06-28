@@ -1,0 +1,569 @@
+/* =========================
+   GLOBAL
+========================= */
+
+body{
+    background:#f4f6f9;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:#333;
+}
+
+a{
+    text-decoration:none;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    background:#0b57d0 !important;
+    box-shadow:0 2px 15px rgba(0,0,0,0.15);
+}
+
+.navbar-brand{
+    font-size:28px;
+    font-weight:700;
+    color:white !important;
+}
+
+.nav-link{
+    color:white !important;
+    margin-left:12px;
+    font-weight:500;
+}
+
+.nav-link:hover{
+    color:#dbe7ff !important;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero-section{
+    padding:80px 0;
+}
+
+.hero-title{
+    font-size:52px;
+    font-weight:700;
+}
+
+.hero-subtitle{
+    font-size:20px;
+    color:#666;
+}
+
+/* =========================
+   SEARCH BAR
+========================= */
+
+.search-box{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   JOB CARD
+========================= */
+
+.job-card{
+    background:white;
+    border:none;
+    border-radius:15px;
+    transition:0.3s;
+    box-shadow:0 2px 15px rgba(0,0,0,0.08);
+}
+
+.job-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+.job-title{
+    color:#0b57d0;
+    font-weight:700;
+}
+
+.company-name{
+    color:#666;
+}
+
+.job-location{
+    color:#888;
+    font-size:14px;
+}
+
+.salary{
+    color:#198754;
+    font-weight:600;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-primary{
+    border-radius:10px;
+}
+
+.btn-success{
+    border-radius:10px;
+}
+
+.btn-outline-primary{
+    border-radius:10px;
+}
+
+.btn-outline-success{
+    border-radius:10px;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.stats-box{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.stats-box:hover{
+    transform:translateY(-4px);
+}
+
+.stats-box h2{
+    color:#0b57d0;
+    font-weight:700;
+}
+
+/* =========================
+   APPLICATION CARD
+========================= */
+
+.application-card{
+    background:white;
+    border:none;
+    border-radius:15px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+
+.application-card:hover{
+    box-shadow:0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress{
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    border-radius:20px;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge{
+    font-size:14px;
+    padding:8px 14px;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+.form-control{
+    border-radius:10px;
+    padding:12px;
+}
+
+.form-control:focus{
+    box-shadow:none;
+    border-color:#0b57d0;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert{
+    border-radius:12px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    margin-top:50px;
+    background:#212529;
+    color:white;
+    padding:25px;
+    text-align:center;
+}
+/* =========================
+   GOOGLE BUTTON
+========================= */
+
+.google-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+    color:#444;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.google-btn:hover{
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+    background:#fafafa;
+    color:#222;
+}
+/* =========================
+   GLOBAL
+========================= */
+
+body{
+    background:#f4f6f9;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color:#333;
+}
+
+a{
+    text-decoration:none;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    background:#0b57d0 !important;
+    box-shadow:0 2px 15px rgba(0,0,0,0.15);
+}
+
+.navbar-brand{
+    font-size:28px;
+    font-weight:700;
+    color:white !important;
+}
+
+.nav-link{
+    color:white !important;
+    margin-left:12px;
+    font-weight:500;
+}
+
+.nav-link:hover{
+    color:#dbe7ff !important;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero-section{
+    padding:80px 0;
+}
+
+.hero-title{
+    font-size:52px;
+    font-weight:700;
+}
+
+.hero-subtitle{
+    font-size:20px;
+    color:#666;
+}
+
+/* =========================
+   SEARCH BAR
+========================= */
+
+.search-box{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   JOB CARD
+========================= */
+
+.job-card{
+    background:white;
+    border:none;
+    border-radius:15px;
+    transition:0.3s;
+    box-shadow:0 2px 15px rgba(0,0,0,0.08);
+}
+
+.job-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+.job-title{
+    color:#0b57d0;
+    font-weight:700;
+}
+
+.company-name{
+    color:#666;
+}
+
+.job-location{
+    color:#888;
+    font-size:14px;
+}
+
+.salary{
+    color:#198754;
+    font-weight:600;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.btn-primary{
+    border-radius:10px;
+}
+
+.btn-success{
+    border-radius:10px;
+}
+
+.btn-outline-primary{
+    border-radius:10px;
+}
+
+.btn-outline-success{
+    border-radius:10px;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.stats-box{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    transition:0.3s;
+}
+
+.stats-box:hover{
+    transform:translateY(-4px);
+}
+
+.stats-box h2{
+    color:#0b57d0;
+    font-weight:700;
+}
+
+/* =========================
+   APPLICATION CARD
+========================= */
+
+.application-card{
+    background:white;
+    border:none;
+    border-radius:15px;
+    box-shadow:0 2px 12px rgba(0,0,0,0.08);
+}
+
+.application-card:hover{
+    box-shadow:0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* =========================
+   PROGRESS BAR
+========================= */
+
+.progress{
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    border-radius:20px;
+}
+
+/* =========================
+   BADGES
+========================= */
+
+.badge{
+    font-size:14px;
+    padding:8px 14px;
+}
+
+/* =========================
+   FORMS
+========================= */
+
+.form-control{
+    border-radius:10px;
+    padding:12px;
+}
+
+.form-control:focus{
+    box-shadow:none;
+    border-color:#0b57d0;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+    border:none;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   ALERTS
+========================= */
+
+.alert{
+    border-radius:12px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    margin-top:50px;
+    background:#212529;
+    color:white;
+    padding:25px;
+    text-align:center;
+}
+/* =========================
+   GOOGLE BUTTON
+========================= */
+
+.google-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:100%;
+    padding:14px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    background:white;
+    color:#444;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.google-btn:hover{
+    box-shadow:0 4px 12px rgba(0,0,0,.1);
+    background:#fafafa;
+    color:#222;
+}
+/* ===========================================
+   TalentSync AI Branding
+=========================================== */
+
+.navbar{
+
+    background:#ffffff;
+
+    box-shadow:0 2px 15px rgba(0,0,0,.08);
+
+    padding:12px 0;
+
+}
+
+.logo-img{
+
+    width:55px;
+
+    height:55px;
+
+    object-fit:contain;
+
+}
+
+.brand-name{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    color:#0F172A;
+
+    line-height:1.1;
+
+}
+
+.brand-tagline{
+
+    font-size:12px;
+
+    color:#64748B;
+
+}
+
+.nav-link{
+
+    font-weight:600;
+
+    color:#334155 !important;
+
+    transition:.3s;
+
+}
+
+.nav-link:hover{
+
+    color:#2563EB !important;
+
+}
+
+.footer{
+
+    margin-top:70px;
+
+    background:#0F172A;
+
+    color:white;
+
+}

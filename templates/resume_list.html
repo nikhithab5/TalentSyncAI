@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h2>Uploaded Resumes</h2>
+
+    <table class="table table-bordered mt-4">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Resume</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for resume in resumes %}
+
+            <tr>
+
+                <td>{{ resume.name }}</td>
+
+                <td>
+                    <a href="{{ resume.resume.url }}">
+                        View Resume
+                    </a>
+                </td>
+
+                <td>
+
+                    <a href="{% url 'best_matching_jobs' resume.id %}"
+                       class="btn btn-primary btn-sm">
+                        Find Best Jobs
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="3">
+                    No resumes uploaded.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

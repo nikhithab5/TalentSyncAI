@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <h1 class="mb-4">Resume Analysis</h1>
+
+    <h3>Applied Job: {{ job.title }}</h3>
+
+    <hr>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+
+            <h3>Resume Match Score</h3>
+
+            <div class="progress mb-3" style="height: 35px;">
+
+                <div
+                    class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar"
+                    style="width: {{ score }}%;"
+                >
+                    {{ score }}%
+                </div>
+
+            </div>
+
+            {% if score >= 80 %}
+
+                <div class="alert alert-success mb-0">
+                    ⭐ Excellent Match! You are highly suitable for this role.
+                </div>
+
+            {% elif score >= 60 %}
+
+                <div class="alert alert-info mb-0">
+                    👍 Good Match! Improve a few skills to become a stronger candidate.
+                </div>
+
+            {% elif score >= 40 %}
+
+                <div class="alert alert-warning mb-0">
+                    ⚠ Moderate Match! Focus on learning the missing skills.
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-danger mb-0">
+                    ❌ Low Match! Significant skill improvement is recommended.
+                </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+    <h3>Matched Skills</h3>
+
+    <ul class="list-group mb-4">
+
+        {% for skill in found_skills %}
+
+            <li class="list-group-item">
+                ✔ {{ skill }}
+            </li>
+
+        {% empty %}
+
+            <li class="list-group-item">
+                No matching skills found
+            </li>
+
+        {% endfor %}
+
+    </ul>
+
+    <h3>Missing Skills</h3>
+
+    <ul class="list-group mb-4">
+
+        {% for skill in missing_skills %}
+
+            <li class="list-group-item">
+                ✘ {{ skill }}
+            </li>
+
+        {% empty %}
+
+            <li class="list-group-item">
+                No missing skills
+            </li>
+
+        {% endfor %}
+
+    </ul>
+
+    <div class="alert alert-info">
+
+        <h4>🤖 AI Recommendation</h4>
+
+        {% if missing_skills %}
+
+            <p>
+                To improve your chances for the
+                <strong>{{ job.title }}</strong>
+                role, focus on learning:
+            </p>
+
+            <ul>
+
+                {% for skill in missing_skills %}
+
+                    <li>{{ skill }}</li>
+
+                {% endfor %}
+
+            </ul>
+
+        {% else %}
+
+            <p>
+                Excellent! Your resume matches all required skills.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+    <div class="card shadow mt-4">
+
+        <div class="card-body">
+
+            <h4>📚 Learning Roadmap</h4>
+
+            {% if missing_skills %}
+
+                <ol>
+
+                    {% for skill in missing_skills %}
+
+                        <li>Learn {{ skill }}</li>
+
+                    {% endfor %}
+
+                </ol>
+
+                <div class="alert alert-warning">
+
+                    <strong>Potential Score After Learning:</strong>
+                    100%
+
+                </div>
+
+            {% else %}
+
+                <div class="alert alert-success">
+
+                    🎉 Congratulations! You already meet all skill requirements.
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Saved Jobs</h2>
+
+    {% for item in jobs %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4>{{ item.job.title }}</h4>
+            <p>{{ item.job.company.name }}</p>
+            <p>{{ item.job.location }}</p>
+        </div>
+    </div>
+    {% empty %}
+        <p>No saved jobs yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
