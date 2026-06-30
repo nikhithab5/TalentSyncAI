@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,7 +52,6 @@ INSTALLED_APPS = [
 
 'core.apps.CoreConfig',
 'accounts.apps.AccountsConfig',
-
 ]
 
 SITE_ID = 1
@@ -187,3 +192,4 @@ EMAIL_HOST_USER = 'talentsyncai1@gmail.com'
 EMAIL_HOST_PASSWORD = 'jieqhonmjjutwooz'
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")

@@ -134,4 +134,25 @@ path(
     views.job_fit_analyzer,
     name="job_fit_analyzer",
 ),
+path(
+    "gemini-test/",
+    views.gemini_test,
+    name="gemini_test",
+),
+path(
+    "interview/",
+    views.interview_home,
+    name="interview_home",
+),
+path(
+    "interview/question/",
+    views.interview_question,
+    name="interview_question",
+),
+path('interview/report/', views.interview_report, name='interview_report'),
+path(
+    "interview/finished/",
+    views.interview_finished,
+    name="interview_finished",
+),
 ]

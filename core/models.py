@@ -183,3 +183,31 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} Profile"
+    
+class InterviewResult(models.Model):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE
+    )
+
+    job_role = models.CharField(
+        max_length=100
+    )
+
+    question = models.TextField()
+
+    answer = models.TextField()
+
+    feedback = models.TextField()
+
+    score = models.IntegerField(
+        default=0
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    def __str__(self):
+        return f"{self.user.username} - {self.job_role}"

@@ -1,3 +1,4 @@
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Company, Job, Application, SavedJob, Resume
@@ -5,7 +6,7 @@ from .forms import ResumeForm, JobForm
 import PyPDF2
 from django.core.mail import send_mail
 from django.conf import settings
-
+from .gemini import ask_gemini
 def home(request):
     query = request.GET.get('q')
 
@@ -668,3 +669,236 @@ def job_fit_analyzer(request):
             "missing_skills": missing_skills
         }
     )
+from django.http import HttpResponse
+
+def gemini_test(request):
+    answer = ask_gemini("Say Hello from Gemini.")
+    return HttpResponse(answer)
+@login_required
+def interview_home(request):
+
+    if request.method == "POST":
+
+        job_role = request.POST.get("job_role")
+        experience = request.POST.get("experience")
+        question_count = request.POST.get("question_count")
+
+        prompt = f"""
+Generate exactly {question_count} interview questions for a {experience} {job_role}.
+
+Rules:
+- Number each question.
+- Return only the questions.
+- No answers.
+"""
+
+        result = ask_gemini(prompt)
+
+        # Convert Gemini response into a list
+        questions = [
+            q.strip()
+            for q in result.split("\n")
+            if q.strip()
+        ]
+        request.session["questions"] = questions
+        request.session["answers"] = []
+        request.session["current_question"] = 0
+        request.session["job_role"] = job_role
+
+        return redirect("interview_question")
+
+    return render(request, "interview_home.html")
+@login_required
+def interview_question(request):
+
+    questions = request.session.get("questions", [])
+    current = request.session.get("current_question", 0)
+    answers = request.session.get("answers", [])
+
+    if not questions:
+        return redirect("interview_home")
+
+    if current >= len(questions):
+        return redirect("interview_report")
+
+    feedback = None
+
+    if request.method == "POST":
+
+        # User clicked Next Question
+        if "next" in request.POST:
+            current += 1
+            request.session["current_question"] = current
+
+            if current >= len(questions):
+                return redirect("interview_report")
+
+            return redirect("interview_question")
+
+        # User submitted answer
+        answer = request.POST.get("answer")
+
+        answers.append(answer)
+        request.session["answers"] = answers
+
+        # Temporary feedback
+        feedback = f"""
+Good attempt!
+
+Your answer was recorded successfully.
+
+Try to:
+- Explain concepts clearly.
+- Give examples.
+- Keep answers structured.
+        """
+
+    return render(
+        request,
+        "interview_question.html",
+        {
+            "question": questions[current],
+            "current": current + 1,
+            "total": len(questions),
+            "feedback": feedback,
+        }
+    )
+@login_required
+def interview_report(request):
+
+    questions = request.session.get("questions", [])
+    answers = request.session.get("answers", [])
+
+    # If interview wasn't started
+    if not questions or not answers:
+        return redirect("interview_home")
+
+    # --------------------------------
+    # Use cached report if available
+    # --------------------------------
+    report = request.session.get("report")
+
+    if not report:
+
+        prompt = """
+You are an expert technical interviewer.
+
+Evaluate the complete interview.
+
+Return ONLY in this format:
+
+Overall Score: X/10
+
+Strengths:
+- Point 1
+- Point 2
+
+Weaknesses:
+- Point 1
+- Point 2
+
+Hiring Recommendation:
+Selected / Needs Improvement / Not Selected
+
+Detailed Suggestions:
+- Point 1
+- Point 2
+
+Final Feedback:
+Short paragraph
+"""
+
+        # Add all questions and answers
+        for question, answer in zip(questions, answers):
+
+            prompt += f"""
+
+Question:
+{question}
+
+Candidate Answer:
+{answer}
+
+"""
+
+        # Ask Gemini
+        report = ask_gemini(prompt)
+
+        # Save report in session
+        request.session["report"] = report
+
+    # --------------------------------
+    # Parse Score
+    # --------------------------------
+    score = "Not Available"
+    strengths = []
+    improvements = []
+    recommendation = "Pending"
+
+    match = re.search(
+        r"Overall Score:\s*(.*)",
+        report
+    )
+
+    if match:
+        score = match.group(1).strip()
+
+    # --------------------------------
+    # Parse Strengths
+    # --------------------------------
+    if "Strengths:" in report:
+
+        section = report.split("Strengths:")[1]
+
+        if "Weaknesses:" in section:
+            section = section.split("Weaknesses:")[0]
+
+        strengths = [
+            line.replace("-", "").replace("*", "").strip()
+            for line in section.splitlines()
+            if line.strip()
+        ]
+
+    # --------------------------------
+    # Parse Weaknesses
+    # --------------------------------
+    if "Weaknesses:" in report:
+
+        section = report.split("Weaknesses:")[1]
+
+        if "Hiring Recommendation:" in section:
+            section = section.split(
+                "Hiring Recommendation:"
+            )[0]
+
+        improvements = [
+            line.replace("-", "").replace("*", "").strip()
+            for line in section.splitlines()
+            if line.strip()
+        ]
+
+    # --------------------------------
+    # Parse Recommendation
+    # --------------------------------
+    match = re.search(
+        r"Hiring Recommendation:\s*(.*)",
+        report
+    )
+
+    if match:
+        recommendation = match.group(1).strip()
+
+    return render(
+        request,
+        "interview_report.html",
+        {
+            "score": score,
+            "strengths": strengths,
+            "improvements": improvements,
+            "recommendation": recommendation,
+            "report": report,
+        },
+    )
+@login_required
+def interview_finished(request):
+    return redirect("interview_report")

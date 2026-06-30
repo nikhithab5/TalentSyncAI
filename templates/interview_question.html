@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg p-5">
+
+        <h2 class="text-primary text-center">
+            🤖 AI Interview Coach
+        </h2>
+
+        <hr>
+
+        <!-- Progress -->
+        <div class="d-flex justify-content-between mb-3">
+            <h5>
+                Question {{ current }} of {{ total }}
+            </h5>
+
+            <span class="badge bg-primary">
+                {{ current }}/{{ total }}
+            </span>
+        </div>
+        <!-- Progress -->
+<div class="d-flex justify-content-between mb-3">
+    <h5>
+        Question {{ current }} of {{ total }}
+    </h5>
+
+    <span class="badge bg-primary">
+        {{ current }}/{{ total }}
+    </span>
+</div>
+
+<!-- ADD THIS HERE -->
+<div class="progress mb-4">
+    <div
+        class="progress-bar"
+        style="width: {% widthratio current total 100 %}%">
+    </div>
+</div>
+
+
+        <!-- Question -->
+        <div class="alert alert-light border">
+
+            <h4 id="questionText">
+                {{ question }}
+            </h4>
+
+        </div>
+
+        <!-- Read Question -->
+        <button
+            type="button"
+            class="btn btn-outline-primary mb-4"
+            onclick="readQuestion()">
+
+            🔊 Read Question
+
+        </button>
+
+        {% if not feedback %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="mb-3">
+
+                <label class="form-label fw-bold">
+                    Your Answer
+                </label>
+
+                <textarea
+                    id="answerBox"
+                    name="answer"
+                    rows="8"
+                    class="form-control"
+                    placeholder="Type your answer here or use the microphone..."
+                    required></textarea>
+
+            </div>
+
+            <!-- Voice Buttons -->
+
+            <div class="mb-4">
+
+                <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="startRecognition()">
+
+                    🎤 Start Speaking
+
+                </button>
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="stopRecognition()">
+
+                    ⏹ Stop
+
+                </button>
+
+            </div>
+
+            <button
+                class="btn btn-primary w-100">
+
+                Submit Answer
+
+            </button>
+
+        </form>
+
+        {% else %}
+
+        <div class="alert alert-success mt-4">
+
+            <h4>
+                🤖 AI Feedback
+            </h4>
+
+            <pre style="white-space:pre-wrap;">{{ feedback }}</pre>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                name="next"
+                class="btn btn-success w-100">
+
+                Next Question →
+
+            </button>
+
+        </form>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+<script>
+
+// ===============================
+// Read Question
+// ===============================
+
+function readQuestion(){
+
+    let question =
+        document.getElementById("questionText").innerText;
+
+    let speech =
+        new SpeechSynthesisUtterance(question);
+
+    speech.rate = 1;
+
+    speech.pitch = 1;
+
+    speech.lang = "en-US";
+
+    // Stop any previous speech
+    window.speechSynthesis.cancel();
+
+    // Read the current question
+    window.speechSynthesis.speak(speech);
+
+}
+
+
+// ===============================
+// Voice Recognition
+// ===============================
+let recognition = null;
+
+if ("webkitSpeechRecognition" in window) {
+
+    recognition = new webkitSpeechRecognition();
+
+} else {
+
+    alert("Speech Recognition is not supported in this browser. Please use Google Chrome.");
+
+}
+
+    recognition =
+        new webkitSpeechRecognition();
+
+    recognition.continuous = true;
+
+    recognition.interimResults = false;
+
+    recognition.lang = "en-US";
+
+    recognition.onresult = function(event){
+
+        let text = "";
+
+        for(let i=event.resultIndex;
+            i<event.results.length;
+            i++){
+
+            text += event.results[i][0].transcript + " ";
+
+        }
+document.getElementById("answerBox").value += text;
+
+    };
+
+}
+
+function startRecognition(){
+
+    if(recognition){
+
+        recognition.start();
+
+    }
+
+}
+
+function stopRecognition(){
+
+    if(recognition){
+
+        recognition.stop();
+
+    }
+
+}
+
+</script>
+<script>
+let recognition;
+
+function startRecognition() {
+
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+        alert("Speech Recognition is not supported in this browser.");
+        return;
+    }
+
+    recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.continuous = true;
+    recognition.interimResults = false;
+
+    recognition.onresult = function(event) {
+
+        let transcript = "";
+
+        for (
+            let i = event.resultIndex;
+            i < event.results.length;
+            i++
+        ) {
+            transcript += event.results[i][0].transcript + " ";
+        }
+
+        document.getElementById(
+            "answerBox"
+        ).value += transcript;
+    };
+
+    recognition.start();
+}
+
+function stopRecognition() {
+    if (recognition) {
+        recognition.stop();
+    }
+}
+
+function readQuestion() {
+
+    const text = document.getElementById(
+        "questionText"
+    ).innerText;
+
+    const speech = new SpeechSynthesisUtterance(text);
+
+    speech.lang = "en-US";
+
+    window.speechSynthesis.speak(speech);
+}
+</script>
+
+{% endblock %}

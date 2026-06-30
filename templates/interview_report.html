@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow-lg p-5">
+
+    <h2 class="text-center mb-4">
+        🎯 AI Interview Report
+    </h2>
+
+    <!-- Overall Score -->
+    <div class="alert alert-primary text-center">
+        <h3>
+            Overall Score: {{ score }}
+        </h3>
+    </div>
+
+    <!-- Hiring Recommendation -->
+    <h4 class="mt-4">
+        Hiring Recommendation
+    </h4>
+
+    {% if recommendation == "Selected" %}
+        <div class="alert alert-success">
+            ✅ {{ recommendation }}
+        </div>
+
+    {% elif recommendation == "Needs Improvement" %}
+        <div class="alert alert-warning">
+            ⚠️ {{ recommendation }}
+        </div>
+
+    {% else %}
+        <div class="alert alert-danger">
+            ❌ {{ recommendation }}
+        </div>
+    {% endif %}
+
+    <!-- Strengths -->
+    <h4 class="mt-4">
+        Strengths
+    </h4>
+
+    <ul class="list-group mb-4">
+        {% for item in strengths %}
+            <li class="list-group-item">
+                ✅ {{ item }}
+            </li>
+        {% empty %}
+            <li class="list-group-item">
+                No strengths identified.
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Areas for Improvement -->
+    <h4 class="mt-4">
+        Areas for Improvement
+    </h4>
+
+    <ul class="list-group mb-4">
+        {% for item in improvements %}
+            <li class="list-group-item">
+                ❌ {{ item }}
+            </li>
+        {% empty %}
+            <li class="list-group-item">
+                No improvements identified.
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Full AI Report -->
+    <h4 class="mt-4">
+        Complete AI Feedback
+    </h4>
+
+    <div class="alert alert-success">
+
+        <pre style="white-space:pre-wrap;font-size:16px;">{{ report }}</pre>
+
+    </div>
+
+    <div class="text-center mt-4">
+
+        <a href="{% url 'interview_home' %}"
+           class="btn btn-primary btn-lg">
+
+            Take Another Interview
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

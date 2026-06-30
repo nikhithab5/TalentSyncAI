@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg p-5 text-center">
+
+        <h1 class="text-success">
+            🎉 Interview Completed!
+        </h1>
+
+        <hr>
+
+        <p class="lead">
+
+            Congratulations!
+
+            You have successfully completed your AI Interview.
+
+        </p>
+
+        <p>
+
+            Thank you for practicing with TalentSync AI.
+
+        </p>
+
+        <a href="{% url 'interview_home' %}"
+           class="btn btn-primary mt-3">
+
+            Start Another Interview
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}
