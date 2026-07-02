@@ -34,9 +34,9 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 
 ALLOWED_HOSTS = [
+    ".onrender.com",
     "127.0.0.1",
     "localhost",
-    "talentsync-ai.onrender.com",
 ]
 
 # Application definition
