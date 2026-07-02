@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
-    "8v$p5dc@u&ykp&#^6eb1aapbq7e)i49s@y54msdt=w2#i(@lay"
+    "oq3z*t_h_fir=ocjw4p9s+m8f5&%b_==0wp6d_$9&-t4%3tni1"
 )
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() == "true"
