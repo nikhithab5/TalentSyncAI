@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.views import check_users
 from django.conf import settings
 from django.conf.urls.static import static
 # -------- TalentSync AI Admin Branding --------
@@ -28,7 +27,6 @@ admin.site.index_title = "Welcome to TalentSync AI Dashboard"
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path("check-users/", check_users),
 
     path('', include('core.urls')),
 
