@@ -20,6 +20,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.sitemaps.views import sitemap
 from core.sitemaps import StaticViewSitemap
+from core.views import robots_txt
 # -------- TalentSync AI Admin Branding --------
 admin.site.site_header = "TalentSync AI Administration"
 admin.site.site_title = "TalentSync AI Admin Portal"
@@ -31,6 +32,7 @@ sitemaps = {
 
 
 urlpatterns = [
+     path("robots.txt", robots_txt),
 
     path('admin/', admin.site.urls),
 
