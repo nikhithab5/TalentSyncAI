@@ -7,6 +7,8 @@ import PyPDF2
 from django.core.mail import send_mail
 from django.conf import settings
 from .gemini import ask_gemini
+from django.http import HttpResponse
+
 def home(request):
     query = request.GET.get('q')
 
@@ -902,9 +904,6 @@ Candidate Answer:
 @login_required
 def interview_finished(request):
     return redirect("interview_report")
-from django.http import HttpResponse
-
-
 def robots_txt(request):
     return HttpResponse(
         "User-agent: *\n"
