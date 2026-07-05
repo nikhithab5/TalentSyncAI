@@ -18,11 +18,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.sitemaps.views import sitemap
+from core.sitemaps import StaticViewSitemap
 # -------- TalentSync AI Admin Branding --------
 admin.site.site_header = "TalentSync AI Administration"
 admin.site.site_title = "TalentSync AI Admin Portal"
 admin.site.index_title = "Welcome to TalentSync AI Dashboard"
 # --
+sitemaps = {
+    "static": StaticViewSitemap,
+}
+
 
 urlpatterns = [
 
@@ -39,6 +45,12 @@ urlpatterns = [
         'accounts/',
         include('django.contrib.auth.urls')
     ),
+    path(
+    "sitemap.xml",
+    sitemap,
+    {"sitemaps": sitemaps},
+    name="django.contrib.sitemaps.views.sitemap",
+),
 ]
 
 if settings.DEBUG:
