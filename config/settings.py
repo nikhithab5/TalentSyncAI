@@ -61,7 +61,6 @@ INSTALLED_APPS = [
 'core.apps.CoreConfig',
 'accounts.apps.AccountsConfig',
 'django.contrib.sitemaps',
-'django_extensions',
 ]
 
 SITE_ID = 1
