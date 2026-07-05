@@ -61,6 +61,7 @@ INSTALLED_APPS = [
 'core.apps.CoreConfig',
 'accounts.apps.AccountsConfig',
 'django.contrib.sitemaps',
+'django_extensions',
 ]
 
 SITE_ID = 1
@@ -191,14 +192,16 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Email Configuration

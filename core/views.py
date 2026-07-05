@@ -9,18 +9,9 @@ from django.conf import settings
 from .gemini import ask_gemini
 from django.http import HttpResponse
 
+
 def home(request):
-    query = request.GET.get('q')
-
-    if query:
-        jobs = Job.objects.filter(title__icontains=query)
-    else:
-        jobs = Job.objects.all()
-
-    return render(request, 'home.html', {
-        'jobs': jobs
-    })
-
+    return HttpResponse("HOME PAGE WORKS")
 
 def resume_analyzer(request):
     return render(request, 'resume_analyzer.html')
