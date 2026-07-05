@@ -909,6 +909,6 @@ def robots_txt(request):
     return HttpResponse(
         "User-agent: *\n"
         "Allow: /\n\n"
-        "Sitemap: https://talentsync-ai-nzon.onrender.com/sitemap.xml",
+        "Sitemap: https://talentsync-ai-nzon.onrender.com/sitemap.xml\n",
         content_type="text/plain",
     )
