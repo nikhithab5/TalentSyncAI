@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://talentsync-ai-nzon.onrender.com/sitemap.xml
