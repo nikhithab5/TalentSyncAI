@@ -36,7 +36,7 @@ DEBUG = os.getenv("DEBUG", "False").lower() == "true"
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
-    ".onrender.com",
+    "talentsync-ai-nzon.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
     "https://*.onrender.com",

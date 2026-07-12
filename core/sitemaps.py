@@ -11,14 +11,6 @@ class StaticViewSitemap(Sitemap):
             "home",
             "login",
             "signup",
-            "dashboard",
-            "upload_resume",
-            "resume_list",
-            "saved_jobs",
-            "my_applications",
-            "job_fit_analyzer",
-            "interview_home",
-            "profile",
         ]
 
     def location(self, item):
