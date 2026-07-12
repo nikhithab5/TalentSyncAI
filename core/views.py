@@ -906,10 +906,13 @@ Candidate Answer:
 @login_required
 def interview_finished(request):
     return redirect("interview_report")
+from django.http import HttpResponse
+
 def robots_txt(request):
     return HttpResponse(
         "User-agent: *\n"
-        "Allow: /\n\n"
+        "Allow: /\n"
+        "\n"
         "Sitemap: https://talentsync-ai-nzon.onrender.com/sitemap.xml\n",
         content_type="text/plain",
     )
