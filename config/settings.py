@@ -61,6 +61,8 @@ INSTALLED_APPS = [
 'core.apps.CoreConfig',
 'accounts.apps.AccountsConfig',
 'django.contrib.sitemaps',
+'cloudinary_storage',
+'cloudinary',
 ]
 
 SITE_ID = 1
@@ -191,8 +193,6 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
@@ -228,3 +228,12 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+    import cloudinary
+
+cloudinary.config(
+    cloud_name="zu6scmb6",
+    api_key="539462466999533",
+    api_secret="1DE2ow3puAQ0sZGy6ZuEvZ7As4s",
+)
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
