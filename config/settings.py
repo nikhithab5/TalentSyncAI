@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+import cloudinary
 from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,9 +40,8 @@ ALLOWED_HOSTS = [
     "talentsync-ai-nzon.onrender.com",
 ]
 CSRF_TRUSTED_ORIGINS = [
-    "https://*.onrender.com",
+    "https://talentsync-ai-nzon.onrender.com",
 ]
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -193,9 +193,10 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
 STORAGES = {
     "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
