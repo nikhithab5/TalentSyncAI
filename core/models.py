@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from cloudinary.models import CloudinaryField
 
 class Company(models.Model):
 
@@ -8,12 +8,12 @@ class Company(models.Model):
     location = models.CharField(max_length=100)
     website = models.URLField()
     description = models.TextField()
+    logo = CloudinaryField(
 
-    logo = models.ImageField(
-        upload_to='company_logos/',
-        blank=True,
-        null=True
-    )
+    'logo',
+    blank=True,
+    null=True
+)
 
     def __str__(self):
         return self.name
