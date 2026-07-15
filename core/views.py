@@ -235,6 +235,7 @@ def analyze_resume(request, resume_id, job_id):
     )
 
 
+@login_required
 def best_matching_jobs(request, id):
 
     resume = get_object_or_404(
@@ -242,10 +243,15 @@ def best_matching_jobs(request, id):
         id=id
     )
 
-    pdf_file = open(
-        resume.resume.path,
-        'rb'
-    )
+    response = requests.get(resume.resume.url)
+
+    if response.status_code != 200:
+        return HttpResponse(
+            "Unable to access the uploaded resume.",
+            status=500
+        )
+
+    pdf_file = io.BytesIO(response.content)
 
     reader = PyPDF2.PdfReader(pdf_file)
 
@@ -266,7 +272,7 @@ def best_matching_jobs(request, id):
 
         required_skills = [
             skill.strip()
-            for skill in job.skills.split(',')
+            for skill in job.skills.split(",")
         ]
 
         found = 0
@@ -276,27 +282,30 @@ def best_matching_jobs(request, id):
             if skill.lower() in text.lower():
                 found += 1
 
-        score = int(
-            (found / len(required_skills)) * 100
-        )
+        if len(required_skills) > 0:
+            score = int(
+                (found / len(required_skills)) * 100
+            )
+        else:
+            score = 0
 
         results.append({
-            'job': job,
-            'score': score
+            "job": job,
+            "score": score
         })
 
     results = sorted(
         results,
-        key=lambda x: x['score'],
+        key=lambda x: x["score"],
         reverse=True
     )
 
     return render(
         request,
-        'best_matching_jobs.html',
+        "best_matching_jobs.html",
         {
-            'resume': resume,
-            'results': results
+            "resume": resume,
+            "results": results
         }
     )
 
@@ -602,7 +611,7 @@ def job_fit_analyzer(request):
 
     resume = Resume.objects.filter(
         user=request.user
-    ).order_by('-id').first()
+    ).order_by("-id").first()
 
     score = None
     found_skills = []
@@ -615,14 +624,17 @@ def job_fit_analyzer(request):
             ""
         )
 
-        pdf_file = open(
-            resume.resume.path,
-            "rb"
-        )
+        response = requests.get(resume.resume.url)
 
-        reader = PyPDF2.PdfReader(
-            pdf_file
-        )
+        if response.status_code != 200:
+            return HttpResponse(
+                "Unable to access the uploaded resume.",
+                status=500
+            )
+
+        pdf_file = io.BytesIO(response.content)
+
+        reader = PyPDF2.PdfReader(pdf_file)
 
         resume_text = ""
 
