@@ -8,6 +8,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from .gemini import ask_gemini
 from django.http import HttpResponse
+import io
+import requests
 
 
 
@@ -183,10 +185,12 @@ def analyze_resume(request, resume_id, job_id):
         id=job_id
     )
 
-    pdf_file = open(
-        resume.resume.path,
-        'rb'
-    )
+    response = requests.get(resume.resume.url)
+
+    if response.status_code != 200:
+        return HttpResponse("Unable to access the uploaded resume.", status=500)
+
+    pdf_file = io.BytesIO(response.content)
 
     reader = PyPDF2.PdfReader(pdf_file)
 
