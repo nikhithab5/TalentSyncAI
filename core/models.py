@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from cloudinary.models import CloudinaryField
+
 
 class Company(models.Model):
 
@@ -8,15 +8,10 @@ class Company(models.Model):
     location = models.CharField(max_length=100)
     website = models.URLField()
     description = models.TextField()
-    logo = CloudinaryField(
-
-    'logo',
-    blank=True,
-    null=True
-)
 
     def __str__(self):
         return self.name
+
 
 class Job(models.Model):
 
@@ -166,8 +161,14 @@ class Resume(models.Model):
 
     class Meta:
         ordering = ['-uploaded_at']
+
+
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE
+    )
 
     tsa_id = models.CharField(
         max_length=10,
@@ -183,7 +184,8 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.user.username} Profile"
-    
+
+
 class InterviewResult(models.Model):
 
     user = models.ForeignKey(

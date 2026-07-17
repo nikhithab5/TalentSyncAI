@@ -175,66 +175,57 @@ def resume_list(request):
     )
 def analyze_resume(request, resume_id, job_id):
 
-    resume = get_object_or_404(
-        Resume,
-        id=resume_id
-    )
-
-    job = get_object_or_404(
-        Job,
-        id=job_id
-    )
-
-    response = requests.get(resume.resume.url)
-
-    if response.status_code != 200:
-        return HttpResponse("Unable to access the uploaded resume.", status=500)
-
-    pdf_file = io.BytesIO(response.content)
-
-    reader = PyPDF2.PdfReader(pdf_file)
+    resume = get_object_or_404(Resume, id=resume_id)
+    job = get_object_or_404(Job, id=job_id)
 
     text = ""
 
-    for page in reader.pages:
+    try:
+        with resume.resume.open("rb") as pdf_file:
+            reader = PyPDF2.PdfReader(pdf_file)
 
-        page_text = page.extract_text()
+            for page in reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    text += page_text
 
-        if page_text:
-            text += page_text
+    except Exception as e:
+        return HttpResponse(
+            f"Error reading resume: {e}",
+            status=500
+        )
 
     required_skills = [
         skill.strip()
-        for skill in job.skills.split(',')
+        for skill in job.skills.split(",")
+        if skill.strip()
     ]
 
     found_skills = []
     missing_skills = []
 
     for skill in required_skills:
-
         if skill.lower() in text.lower():
             found_skills.append(skill)
         else:
             missing_skills.append(skill)
 
-    score = int(
-        (len(found_skills) / len(required_skills)) * 100
-    )
+    if required_skills:
+        score = int((len(found_skills) / len(required_skills)) * 100)
+    else:
+        score = 0
 
     return render(
         request,
-        'resume_analysis.html',
+        "resume_analysis.html",
         {
-            'resume': resume,
-            'job': job,
-            'score': score,
-            'found_skills': found_skills,
-            'missing_skills': missing_skills
-        }
+            "resume": resume,
+            "job": job,
+            "score": score,
+            "found_skills": found_skills,
+            "missing_skills": missing_skills,
+        },
     )
-
-
 @login_required
 def best_matching_jobs(request, id):
 
