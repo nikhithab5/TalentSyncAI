@@ -175,7 +175,11 @@ def resume_list(request):
     )
 def analyze_resume(request, resume_id, job_id):
 
-    resume = get_object_or_404(Resume, id=resume_id)
+    resume = get_object_or_404(
+    Resume,
+    id=resume_id,
+    user=request.user
+)
     job = get_object_or_404(Job, id=job_id)
 
     text = ""
