@@ -10,6 +10,7 @@ from .gemini import ask_gemini
 from django.http import HttpResponse
 import io
 import requests
+from django.contrib import messages
 
 
 
@@ -173,6 +174,23 @@ def resume_list(request):
             'resumes': resumes
         }
     )
+@login_required
+def delete_resume(request, id):
+
+    resume = get_object_or_404(
+        Resume,
+        id=id,
+        user=request.user
+    )
+
+    # Delete the actual PDF file
+    if resume.resume:
+        resume.resume.delete(save=False)
+
+    # Delete the database record
+    resume.delete()
+
+    return redirect("resume_list")
 def analyze_resume(request, resume_id, job_id):
 
     resume = get_object_or_404(

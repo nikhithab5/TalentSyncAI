@@ -4,14 +4,20 @@
 
 <div class="container mt-5">
 
-    <h2>Uploaded Resumes</h2>
+    <h2 class="mb-4">📄 My Resumes</h2>
 
-    <table class="table table-bordered mt-4">
+    <div class="mb-3">
+        <a href="{% url 'upload_resume' %}" class="btn btn-success">
+            + Upload New Resume
+        </a>
+    </div>
 
-        <thead>
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
             <tr>
-                <th>Name</th>
-                <th>Resume</th>
+                <th>Resume Name</th>
+                <th>Uploaded On</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,19 +28,31 @@
 
             <tr>
 
-                <td>{{ resume.name }}</td>
+                <td>
+                    {{ resume.name }}
+                </td>
 
                 <td>
-                    <a href="{{ resume.resume.url }}">
-                        View Resume
-                    </a>
+                    {{ resume.uploaded_at|date:"d M Y" }}
                 </td>
 
                 <td>
 
+                    <a href="{{ resume.resume.url }}"
+                       class="btn btn-success btn-sm"
+                       target="_blank">
+                        Download
+                    </a>
+
                     <a href="{% url 'best_matching_jobs' resume.id %}"
                        class="btn btn-primary btn-sm">
                         Find Best Jobs
+                    </a>
+
+                    <a href="{% url 'delete_resume' resume.id %}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are you sure you want to delete this resume?');">
+                        Delete
                     </a>
 
                 </td>
@@ -45,7 +63,7 @@
 
             <tr>
 
-                <td colspan="3">
+                <td colspan="3" class="text-center">
                     No resumes uploaded.
                 </td>
 

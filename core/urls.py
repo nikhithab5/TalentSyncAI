@@ -155,4 +155,9 @@ path(
     views.interview_finished,
     name="interview_finished",
 ),
+path(
+    'delete-resume/<int:id>/',
+    views.delete_resume,
+    name='delete_resume'
+),
 ]
