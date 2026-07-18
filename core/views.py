@@ -29,11 +29,11 @@ def home(request):
 def resume_analyzer(request):
     return render(request, 'resume_analyzer.html')
 
-
+@login_required
 def job_detail(request, id):
 
     job = get_object_or_404(Job, id=id)
-    resumes = Resume.objects.all()
+    resumes = Resume.objects.filter(user=request.user)
 
     return render(request, 'job_detail.html', {
         'job': job,
@@ -231,29 +231,29 @@ def best_matching_jobs(request, id):
 
     resume = get_object_or_404(
         Resume,
-        id=id
+        id=id,
+        user=request.user
     )
 
-    response = requests.get(resume.resume.url)
+    try:
+        with resume.resume.open("rb") as pdf_file:
 
-    if response.status_code != 200:
+            reader = PyPDF2.PdfReader(pdf_file)
+
+            text = ""
+
+            for page in reader.pages:
+
+                page_text = page.extract_text()
+
+                if page_text:
+                    text += page_text
+
+    except Exception as e:
         return HttpResponse(
-            "Unable to access the uploaded resume.",
+            f"Error reading resume: {e}",
             status=500
         )
-
-    pdf_file = io.BytesIO(response.content)
-
-    reader = PyPDF2.PdfReader(pdf_file)
-
-    text = ""
-
-    for page in reader.pages:
-
-        page_text = page.extract_text()
-
-        if page_text:
-            text += page_text
 
     jobs = Job.objects.all()
 
@@ -264,6 +264,7 @@ def best_matching_jobs(request, id):
         required_skills = [
             skill.strip()
             for skill in job.skills.split(",")
+            if skill.strip()
         ]
 
         found = 0
@@ -273,17 +274,19 @@ def best_matching_jobs(request, id):
             if skill.lower() in text.lower():
                 found += 1
 
-        if len(required_skills) > 0:
+        if required_skills:
             score = int(
                 (found / len(required_skills)) * 100
             )
         else:
             score = 0
 
-        results.append({
-            "job": job,
-            "score": score
-        })
+        results.append(
+            {
+                "job": job,
+                "score": score
+            }
+        )
 
     results = sorted(
         results,
@@ -299,7 +302,6 @@ def best_matching_jobs(request, id):
             "results": results
         }
     )
-
 
 def dashboard(request):
 
