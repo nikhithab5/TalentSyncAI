@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{# {% load socialaccount %} #}
+{% load socialaccount %}
 
 {% block content %}
 
@@ -78,17 +78,23 @@
                     </span>
 
                 </div>
+<div class="text-center my-3">
+    <span class="text-muted">
+        ───── OR ─────
+    </span>
+</div>
 
-                <!-- Google Login Button -->
-               {#
-<a href="{% provider_login_url 'google' %}"
-class="btn btn-primary w-100">
+<a href="{% provider_login_url 'google' process='login' %}"
+   class="btn btn-danger w-100 d-flex align-items-center justify-content-center">
 
-Continue with Google
+    <img
+        src="https://developers.google.com/identity/images/g-logo.png"
+        width="20"
+        class="me-2 bg-white rounded-circle p-1">
+
+    Continue with Google
 
 </a>
-#}
-
                 <div class="text-center mt-4">
 
                     <p class="mb-0">
