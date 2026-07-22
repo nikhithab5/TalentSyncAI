@@ -3,103 +3,66 @@
 
 {% block content %}
 
-<div class="row justify-content-center">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
 
-    <div class="col-md-6">
+                <h2 class="text-center mb-2">Welcome Back</h2>
+                <p class="text-center text-muted mb-4">Login to TalentSync AI</p>
 
-        <div class="card shadow-lg border-0 rounded-4 p-4">
+                <form method="POST" autocomplete="on">
+                    {% csrf_token %}
 
-            <h2 class="text-center mb-2">
-                Welcome Back
-            </h2>
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            class="form-control"
+                            placeholder="Enter username"
+                            autocomplete="username"
+                            required>
+                    </div>
 
-            <p class="text-center text-muted mb-4">
-                Login to TalentSync AI
-            </p>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter password"
+                            autocomplete="current-password"
+                            required>
+                    </div>
 
-            <!-- Normal Login Form -->
-            <form method="POST" autocomplete="on">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Login
+                    </button>
+                </form>
 
-                {% csrf_token %}
-
-                <div class="mb-3">
-                    <label class="form-label">
-                        Username
-                    </label>
-
-                    <input
-                        type="text"
-                        name="username"
-                        class="form-control"
-                        placeholder="Enter username"
-                        autocomplete="username"
-                        autocapitalize="none"
-                        spellcheck="false"
-                        required>
+                <div class="text-center my-3">
+                    <span class="text-muted">───── OR ─────</span>
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">
-                        Password
-                    </label>
-
-                    <input
-                        type="password"
-                        name="password"
-                        class="form-control"
-                        placeholder="Enter password"
-                        autocomplete="current-password"
-                        required>
-                </div>
-
-                <div class="text-end mb-3">
-                    <a href="{% url 'password_reset' %}">
-                        Forgot Password?
-                    </a>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100">
-                    Login
-                </button>
-
-            </form>
-
-            <!-- ONLY ONE OR DIVIDER -->
-            <div class="text-center my-4">
-                <span class="text-muted">
-                    ───────── OR ─────────
-                </span>
-            </div>
-
-            <!-- Google Login -->
-            <a href="{% provider_login_url 'google' %}"
-               class="google-btn">
-
-                <img
-                    src="https://developers.google.com/identity/images/g-logo.png"
-                    width="20"
-                    height="20"
-                    class="me-2 bg-white rounded-circle p-1">
-
-                <span>Continue with Google</span>
-
-            </a>
-
-            <!-- Register -->
-            <p class="text-center mt-4 mb-0">
-
-                Don't have an account?
-
-                <a href="{% url 'signup' %}">
-                    Register
+                <a href="{% provider_login_url 'google' %}"
+                   class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center">
+                    <img src="https://developers.google.com/identity/images/g-logo.png"
+                         width="20"
+                         class="me-2">
+                    Continue with Google
                 </a>
 
-            </p>
+                <div class="text-center mt-4">
+                    <p class="mb-0">
+                        Don't have an account?
+                        <a href="{% url 'signup' %}">Register</a>
+                    </p>
+                </div>
 
+            </div>
         </div>
-
     </div>
-
 </div>
 
 {% endblock %}
