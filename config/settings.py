@@ -80,7 +80,7 @@ SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_QUERY_EMAIL = True
 
 # Allauth Settings
-ACCOUNT_LOGIN_METHODS = {'email', 'username'}
+ACCOUNT_LOGIN_METHODS = {"username"}
 
 ACCOUNT_SIGNUP_FIELDS = [
     'username*',
