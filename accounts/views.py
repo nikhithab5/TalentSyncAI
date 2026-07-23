@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
+from django.http import HttpResponse
+
 
 
 def signup(request):
@@ -49,24 +51,9 @@ TalentSyncAI Team
     return render(request, 'signup.html')
 
 
+
 def user_login(request):
-
-    if request.method == 'POST':
-
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(
-            request,
-            username=username,
-            password=password
-        )
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-
-    return render(request, 'login.html')
+    return HttpResponse("Login view is working")
 
 
 def user_logout(request):
