@@ -53,7 +53,7 @@ TalentSyncAI Team
 
 
 def user_login(request):
-    return HttpResponse("Login view is working")
+    return render(request, "login.html")
 
 
 def user_logout(request):
