@@ -1,16 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login Test</title>
-</head>
-<body>
-    <h1>Login Page Works</h1>
+{% extends 'base.html' %}
 
-    <form method="post">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
-</body>
-</html>
+{% block content %}
+
+<h2>Login Test</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="Username">
+    <br><br>
+    <input type="password" name="password" placeholder="Password">
+    <br><br>
+    <button type="submit">Login</button>
+</form>
+
+{% endblock %}
