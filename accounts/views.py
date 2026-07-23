@@ -53,22 +53,14 @@ TalentSyncAI Team
 
 
 def user_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        user = authenticate(
-            request,
-            username=username,
-            password=password
+    try:
+        return render(request, "login.html")
+    except Exception as e:
+        import traceback
+        return HttpResponse(
+            "<pre>" + traceback.format_exc() + "</pre>",
+            content_type="text/html"
         )
-
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-
-    return render(request, 'login.html')
-
 def user_logout(request):
 
     logout(request)
