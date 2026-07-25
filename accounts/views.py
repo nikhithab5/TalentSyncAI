@@ -5,7 +5,9 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
 from allauth.socialaccount.models import SocialApp
+import logging
 
+logger = logging.getLogger(__name__)
 
 
 def signup(request):
@@ -52,17 +54,28 @@ TalentSyncAI Team
     return render(request, 'signup.html')
 
 
-
 def user_login(request):
-    print("SOCIAL APPS:", list(SocialApp.objects.values()))
-    try:
-        return render(request, "login.html")
-    except Exception as e:
-        import traceback
-        return HttpResponse(
-            "<pre>" + traceback.format_exc() + "</pre>",
-            content_type="text/html"
+
+    logger.error("SOCIAL APPS: %s", list(SocialApp.objects.values()))
+
+    if request.method == 'POST':
+
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = authenticate(
+            request,
+            username=username,
+            password=password
         )
+
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+
+    return render(request, 'login.html')
+
+
 def user_logout(request):
 
     logout(request)
