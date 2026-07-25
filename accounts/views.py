@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
+from allauth.socialaccount.models import SocialApp
 
 
 
@@ -53,6 +54,7 @@ TalentSyncAI Team
 
 
 def user_login(request):
+    print("SOCIAL APPS:", list(SocialApp.objects.values()))
     try:
         return render(request, "login.html")
     except Exception as e:
