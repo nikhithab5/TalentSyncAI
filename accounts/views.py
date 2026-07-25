@@ -55,13 +55,9 @@ TalentSyncAI Team
 
 
 def user_login(request):
-
-    logger.error("SOCIAL APPS: %s", list(SocialApp.objects.values()))
-
-    if request.method == 'POST':
-
-        username = request.POST['username']
-        password = request.POST['password']
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
 
         user = authenticate(
             request,
@@ -71,11 +67,9 @@ def user_login(request):
 
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return redirect("home")
 
-    return render(request, 'login.html')
-
-
+    return render(request, "login.html")
 def user_logout(request):
 
     logout(request)
