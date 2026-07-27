@@ -55,76 +55,54 @@ TalentSyncAI Team
 
 
 def signup(request):
-
     if request.method == "POST":
 
-        username = request.POST.get(
-            "username",
-            ""
-        ).strip()
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "")
 
-        email = request.POST.get(
-            "email",
-            ""
-        ).strip()
-
-        password = request.POST.get(
-            "password",
-            ""
-        )
-
-        # Check if username already exists
-        if User.objects.filter(
-            username=username
-        ).exists():
-
+        # Check username
+        if User.objects.filter(username=username).exists():
             return render(
                 request,
                 "signup.html",
                 {
-                    "error":
-                    "Username already exists."
+                    "error": "Username already exists.",
+                    "username": username,
+                    "email": email,
                 }
             )
 
-        # Check if email already exists
-        if User.objects.filter(
-            email=email
-        ).exists():
-
+        # Check email
+        if User.objects.filter(email=email).exists():
             return render(
                 request,
                 "signup.html",
                 {
-                    "error":
-                    "Email is already registered."
+                    "error": "Email is already registered.",
+                    "username": username,
+                    "email": email,
                 }
             )
 
         # Create user
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        # Send welcome email
-        # Registration will still succeed
-        # if email sending fails
-        send_welcome_email(
-            username,
-            email
-        )
+        # Log the user in automatically
+        login(request, user)
 
-        # Redirect after successful registration
+        # Send welcome email
+        # Email failure will NOT stop registration
+        send_welcome_email(username, email)
+
+        # Go to home page
         return redirect("home")
 
-    return render(
-        request,
-        "signup.html"
-    )
-
-
+    return render(request, "signup.html")
 def user_login(request):
 
     if request.method == "POST":
