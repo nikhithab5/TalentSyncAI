@@ -55,6 +55,7 @@ TalentSyncAI Team
 
 
 def signup(request):
+    print("========== CUSTOM SIGNUP VIEW CALLED ==========")
     if request.method == "POST":
 
         username = request.POST.get("username", "").strip()
