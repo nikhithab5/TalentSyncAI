@@ -198,15 +198,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Email Configuration
 # Email Configuration
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = "onboarding@resend.dev"
 
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 # Production Security Settings
