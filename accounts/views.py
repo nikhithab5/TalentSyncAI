@@ -6,7 +6,6 @@ from django.conf import settings
 import threading
 
 
-# Send welcome email in the background
 def send_welcome_email(username, email):
     try:
         send_mail(
@@ -19,7 +18,6 @@ Welcome to TalentSyncAI!
 Your account has been created successfully.
 
 You can now:
-
 • Apply for jobs
 • Save jobs
 • Upload resumes
@@ -37,40 +35,55 @@ TalentSyncAI Team
         pass
 
 
-# User Registration
 def signup(request):
-
     if request.method == "POST":
 
-        username = request.POST["username"]
-        email = request.POST["email"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
-        User.objects.create_user(
+        # Check if username already exists
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "signup.html",
+                {"error": "Username already exists."}
+            )
+
+        # Check if email already exists
+        if User.objects.filter(email=email).exists():
+            return render(
+                request,
+                "signup.html",
+                {"error": "Email already exists."}
+            )
+
+        # Create user
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        # Send welcome email without blocking registration
+        # Send welcome email in background
+        # Registration will NOT fail if email sending has a problem
         threading.Thread(
             target=send_welcome_email,
             args=(username, email),
             daemon=True
         ).start()
 
+        # Redirect immediately after account creation
         return redirect("home")
 
     return render(request, "signup.html")
 
 
-# User Login
 def user_login(request):
-
     if request.method == "POST":
 
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username = request.POST.get("username")
+        password = request.POST.get("password")
 
         user = authenticate(
             request,
@@ -82,12 +95,15 @@ def user_login(request):
             login(request, user)
             return redirect("home")
 
+        return render(
+            request,
+            "login.html",
+            {"error": "Invalid username or password."}
+        )
+
     return render(request, "login.html")
 
 
-# User Logout
 def user_logout(request):
-
     logout(request)
-
     return redirect("home")
