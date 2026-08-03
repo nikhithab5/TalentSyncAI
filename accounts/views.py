@@ -68,6 +68,8 @@ def signup(request):
             password=password
         )
 
+        login(request, user)
+
         return redirect("home")
 
     return render(request, "signup.html")
