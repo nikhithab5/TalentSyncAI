@@ -55,52 +55,19 @@ TalentSyncAI Team
 
 
 def signup(request):
-    print("========== CUSTOM SIGNUP VIEW CALLED ==========")
+
     if request.method == "POST":
 
-        username = request.POST.get("username", "").strip()
-        email = request.POST.get("email", "").strip()
-        password = request.POST.get("password", "")
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
 
-        # Check username
-        if User.objects.filter(username=username).exists():
-            return render(
-                request,
-                "signup.html",
-                {
-                    "error": "Username already exists.",
-                    "username": username,
-                    "email": email,
-                }
-            )
-
-        # Check email
-        if User.objects.filter(email=email).exists():
-            return render(
-                request,
-                "signup.html",
-                {
-                    "error": "Email is already registered.",
-                    "username": username,
-                    "email": email,
-                }
-            )
-
-        # Create user
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        # Log the user in automatically
-        login(request, user)
-
-        # Send welcome email
-        # Email failure will NOT stop registration
-        send_welcome_email(username, email)
-
-        # Go to home page
         return redirect("home")
 
     return render(request, "signup.html")
