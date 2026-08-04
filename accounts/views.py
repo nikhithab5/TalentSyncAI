@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def send_welcome_email(username, email):
     """
     Sends a welcome email using Resend.
-    If email sending fails, registration still succeeds.
+    Registration will continue even if email sending fails.
     """
 
     try:
@@ -41,68 +41,77 @@ TalentSyncAI Team
 """,
         })
 
-        logger.info(
-            "Welcome email sent successfully to %s",
-            email
-        )
+        logger.info("Welcome email sent successfully to %s", email)
 
     except Exception as e:
-        # Email failure will NOT stop user registration
-        logger.error(
-            "Welcome email failed: %s",
-            e
-        )
+        logger.error("Welcome email failed: %s", e)
 
 
 def signup(request):
 
     if request.method == "POST":
 
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        username = request.POST.get("username", "").strip()
+        email = request.POST.get("email", "").strip()
+        password = request.POST.get("password", "")
+
+        if User.objects.filter(username=username).exists():
+            return render(
+                request,
+                "signup.html",
+                {
+                    "error": "Username already exists.",
+                    "username": username,
+                    "email": email,
+                },
+            )
+
+        if User.objects.filter(email=email).exists():
+            return render(
+                request,
+                "signup.html",
+                {
+                    "error": "Email is already registered.",
+                    "username": username,
+                    "email": email,
+                },
+            )
 
         user = User.objects.create_user(
             username=username,
             email=email,
-            password=password
+            password=password,
         )
 
         login(
-    request,
-    user,
-    backend="django.contrib.auth.backends.ModelBackend"
-)
+            request,
+            user,
+            backend="django.contrib.auth.backends.ModelBackend",
+        )
+
+        send_welcome_email(username, email)
 
         return redirect("home")
 
     return render(request, "signup.html")
+
+
 def user_login(request):
 
     if request.method == "POST":
 
-        username = request.POST.get(
-            "username",
-            ""
-        ).strip()
-
-        password = request.POST.get(
-            "password",
-            ""
-        )
+        username = request.POST.get("username", "").strip()
+        password = request.POST.get("password", "")
 
         user = authenticate(
             request,
             username=username,
-            password=password
+            password=password,
         )
 
         if user is not None:
 
-            login(
-                request,
-                user
-            )
+            login(request, user)
 
             return redirect("home")
 
@@ -110,15 +119,11 @@ def user_login(request):
             request,
             "login.html",
             {
-                "error":
-                "Invalid username or password."
-            }
+                "error": "Invalid username or password.",
+            },
         )
 
-    return render(
-        request,
-        "login.html"
-    )
+    return render(request, "login.html")
 
 
 def user_logout(request):
