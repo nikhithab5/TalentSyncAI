@@ -53,7 +53,7 @@ def signup(request):
 
         username = request.POST.get("username", "").strip()
         email = request.POST.get("email", "").strip()
-        password = request.POST.get("password", "")
+        password = request.POST.get("password", "").strip()
 
         if User.objects.filter(username=username).exists():
             return render(
@@ -103,6 +103,9 @@ def user_login(request):
         username = request.POST.get("username", "").strip()
         password = request.POST.get("password", "")
 
+        print("========== LOGIN ATTEMPT ==========")
+        print("Username:", username)
+
         user = authenticate(
             request,
             username=username,
@@ -111,9 +114,17 @@ def user_login(request):
 
         if user is not None:
 
-            login(request, user)
+            print("✅ Login Successful:", user.username)
+
+            login(
+                request,
+                user,
+                backend="django.contrib.auth.backends.ModelBackend",
+            )
 
             return redirect("home")
+
+        print("❌ Authentication Failed")
 
         return render(
             request,
