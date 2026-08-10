@@ -5,6 +5,7 @@ from django.conf import settings
 import resend
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -41,21 +42,54 @@ TalentSyncAI Team
 """,
         })
 
-        logger.info("Welcome email sent successfully to %s", email)
+        logger.info(
+            "Welcome email sent successfully to %s",
+            email
+        )
 
     except Exception as e:
-        logger.error("Welcome email failed: %s", e)
+        logger.error(
+            "Welcome email failed: %s",
+            e
+        )
 
 
 def signup(request):
 
     if request.method == "POST":
 
-        username = request.POST.get("username", "").strip()
-        email = request.POST.get("email", "").strip()
-        password = request.POST.get("password", "").strip()
+        username = request.POST.get(
+            "username",
+            ""
+        ).strip()
 
-        if User.objects.filter(username=username).exists():
+        email = request.POST.get(
+            "email",
+            ""
+        ).strip()
+
+        # Do NOT strip passwords
+        password = request.POST.get(
+            "password",
+            ""
+        )
+
+        # Check username
+        if not username:
+            return render(
+                request,
+                "signup.html",
+                {
+                    "error": "Username is required.",
+                    "username": username,
+                    "email": email,
+                },
+            )
+
+        if User.objects.filter(
+            username=username
+        ).exists():
+
             return render(
                 request,
                 "signup.html",
@@ -66,7 +100,22 @@ def signup(request):
                 },
             )
 
-        if User.objects.filter(email=email).exists():
+        # Check email
+        if not email:
+            return render(
+                request,
+                "signup.html",
+                {
+                    "error": "Email is required.",
+                    "username": username,
+                    "email": email,
+                },
+            )
+
+        if User.objects.filter(
+            email=email
+        ).exists():
+
             return render(
                 request,
                 "signup.html",
@@ -77,31 +126,54 @@ def signup(request):
                 },
             )
 
+        # Check password
+        if not password:
+            return render(
+                request,
+                "signup.html",
+                {
+                    "error": "Password is required.",
+                    "username": username,
+                    "email": email,
+                },
+            )
+
+        # Create user
         user = User.objects.create_user(
             username=username,
             email=email,
             password=password,
         )
 
-        login(
-            request,
-            user,
-            backend="django.contrib.auth.backends.ModelBackend",
+        # Send welcome email
+        send_welcome_email(
+            username,
+            email
         )
 
-        send_welcome_email(username, email)
+        # After registration, go to LOGIN page
+        return redirect("login")
 
-        return redirect("home")
-
-    return render(request, "signup.html")
+    return render(
+        request,
+        "signup.html"
+    )
 
 
 def user_login(request):
 
     if request.method == "POST":
 
-        username = request.POST.get("username", "").strip()
-        password = request.POST.get("password", "")
+        username = request.POST.get(
+            "username",
+            ""
+        ).strip()
+
+        # Do NOT strip password
+        password = request.POST.get(
+            "password",
+            ""
+        )
 
         print("========== LOGIN ATTEMPT ==========")
         print("Username:", username)
@@ -114,8 +186,13 @@ def user_login(request):
 
         if user is not None:
 
-            print("✅ Login Successful:", user.username)
+            print(
+                "Login Successful:",
+                user.username
+            )
 
+            # Explicit backend because your project
+            # has multiple authentication backends
             login(
                 request,
                 user,
@@ -124,17 +201,21 @@ def user_login(request):
 
             return redirect("home")
 
-        print("❌ Authentication Failed")
+        print("Authentication Failed")
 
         return render(
             request,
             "login.html",
             {
                 "error": "Invalid username or password.",
+                "username": username,
             },
         )
 
-    return render(request, "login.html")
+    return render(
+        request,
+        "login.html"
+    )
 
 
 def user_logout(request):
@@ -142,3 +223,4 @@ def user_logout(request):
     logout(request)
 
     return redirect("home")
+
