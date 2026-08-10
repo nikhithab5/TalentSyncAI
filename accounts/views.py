@@ -74,7 +74,7 @@ def signup(request):
             ""
         )
 
-        # Check username
+        # Username validation
         if not username:
             return render(
                 request,
@@ -100,7 +100,7 @@ def signup(request):
                 },
             )
 
-        # Check email
+        # Email validation
         if not email:
             return render(
                 request,
@@ -126,7 +126,7 @@ def signup(request):
                 },
             )
 
-        # Check password
+        # Password validation
         if not password:
             return render(
                 request,
@@ -151,7 +151,7 @@ def signup(request):
             email
         )
 
-        # After registration, go to LOGIN page
+        # After registration, go to login page
         return redirect("login")
 
     return render(
@@ -191,7 +191,7 @@ def user_login(request):
                 user.username
             )
 
-            # Explicit backend because your project
+            # Explicit backend because the project
             # has multiple authentication backends
             login(
                 request,
@@ -223,4 +223,3 @@ def user_logout(request):
     logout(request)
 
     return redirect("home")
-
